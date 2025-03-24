@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import "./App.css";
 import { Xumm } from "xumm";
@@ -14,7 +15,7 @@ function App() {
       Amount: "1000000",
     });
     xumm.xapp?.openSignRequest({
-      uuid: payload?.uuid,
+      uuid: payload!.uuid,
     });
   };
 
