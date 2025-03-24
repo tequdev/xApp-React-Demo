@@ -1,31 +1,26 @@
 import React from "react";
-import { useState } from "react";
 import "./App.css";
 import { Xumm } from "xumm";
 
 const xumm = new Xumm("api-key");
+const ottToken = xumm.xapp?.getEnvironment().ott || ''
+
+const xummOtt = new Xumm(ottToken)
+xummOtt.environment.ott?.then((ott) => {
+  alert(ott?.origin?.type)
+})
 
 function App() {
-  const [account, setAccount] = useState(null);
-  xumm.user.account.then((a) => setAccount(a));
-  const createTransaction = async () => {
-    const payload = await xumm.payload?.create({
-      TransactionType: "Payment",
-      Destination: "rQQQrUdN1cLdNmxH4dHfKgmX5P4kf3ZrM",
-      Amount: "1000000",
-    });
-    xumm.xapp?.openSignRequest({
-      uuid: payload!.uuid,
-    });
-  };
+  if (xumm.runtime.xapp) {
+    xummOtt.environment.ott?.then((ott) => {
+      if (ott?.origin?.type === 'QR')
+        alert(ott.origin.data)
+    })
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        Address: {account}
-        <button className="Payment-button" onClick={createTransaction}>
-          Create Payment Transaction
-        </button>
         <button className="Close-button" onClick={() => xumm.xapp?.close()}>
           Close xApp
         </button>
